@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth/minimal";
+import { betterAuth } from "better-auth";
 import { env } from "./env";
 import { hashPassword } from "@/utils/password-hashing";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
