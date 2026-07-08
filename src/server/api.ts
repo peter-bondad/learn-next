@@ -5,8 +5,6 @@ import { cors } from "hono/cors";
 
 const app = new Hono()
 
-  .basePath("/api")
-
   .use(
     "/api/auth/*", // or replace with "*" to enable cors for all routes
     cors({
@@ -18,7 +16,7 @@ const app = new Hono()
       credentials: true,
     }),
   )
-  .on(["POST", "GET"], "/api/auth/*", (c) => {
+  .on(["POST", "GET"], "/auth/*", (c) => {
     return auth.handler(c.req.raw);
   })
 
