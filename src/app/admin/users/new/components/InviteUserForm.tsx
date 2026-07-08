@@ -128,7 +128,12 @@ export function InviteUserForm() {
         </p>
       ) : null}
 
-      <Button type="submit" disabled={submitting} className="h-11 w-full">
+      <Button
+        type="submit"
+        disabled={submitting}
+        size="lg"
+        className="cursor-pointer h-12 w-full rounded-full bg-[#6f3e1d] text-[#fff8ef] shadow-[0_14px_30px_-18px_rgba(74,43,28,0.9)] hover:bg-[#8d5a2b] focus-visible:ring-[#e0b887]"
+      >
         {submitting ? (
           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
         ) : (
