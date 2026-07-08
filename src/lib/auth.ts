@@ -3,6 +3,7 @@ import { env } from "./env";
 import { hashPassword } from "@/utils/password-hashing";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import db from "@/server/infra/database/client";
+import { ac, user, admin as adminPlugin } from "./permissions";
 import { admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
@@ -23,5 +24,13 @@ export const auth = betterAuth({
       hash: hashPassword,
     },
   },
-  plugins: [admin()],
+  plugins: [
+    admin({
+      ac,
+      roles: {
+        user,
+        adminPlugin,
+      },
+    }),
+  ],
 });
