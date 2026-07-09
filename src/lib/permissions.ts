@@ -5,6 +5,15 @@ export const statement = {
   user: ["create", "read", "update", "delete"],
 } as const;
 
+export type Resource = keyof typeof statement;
+
+export type PermissionAction<T extends Resource> =
+  (typeof statement)[T][number];
+
+export type Permission = {
+  [K in Resource]: PermissionAction<K>[];
+};
+
 export const ac = createAccessControl(statement);
 
 export const admin = ac.newRole({
