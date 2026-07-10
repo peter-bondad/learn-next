@@ -3,9 +3,10 @@ import { factory } from "@/server/hono/hono-factory";
 
 import { acceptInvitationDto, createInvitationDto } from "./invitation.dto";
 import { container } from "@/server/container";
+import { validator } from "@/server/shared/validator";
 
 export const createInvitationController = factory.createHandlers(
-  zValidator("json", createInvitationDto),
+  validator("json", createInvitationDto),
   async (c) => {
     const user = c.get("user");
 
@@ -34,7 +35,7 @@ export const createInvitationController = factory.createHandlers(
 );
 
 export const acceptInvitationController = factory.createHandlers(
-  zValidator("json", acceptInvitationDto),
+  validator("json", acceptInvitationDto),
   async (c) => {
     const { name, password, token } = c.req.valid("json");
 
