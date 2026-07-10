@@ -30,7 +30,7 @@ export interface MarkInvitationAccepted {
   userId: string;
 }
 
-export interface InvitationIRepository {
+export interface IInvitationRepository {
   create(data: CreateInvitation): Promise<void>;
 
   getPendingByEmail(email: string): Promise<PendingInvitation | undefined>;

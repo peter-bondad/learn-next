@@ -6,13 +6,13 @@ import { invitations } from "@/server/infra/database/schemas";
 import type {
   CreateInvitation,
   InvitationForAcceptance,
-  InvitationIRepository,
+  IInvitationRepository,
   MarkInvitationAccepted,
   PendingInvitation,
 } from "./invitation.interface";
 import { invitationStatus } from "./invitation.constant";
 
-export class InvitationRepository implements InvitationIRepository {
+export class InvitationRepository implements IInvitationRepository {
   constructor(private readonly database = db) {}
 
   async create(data: CreateInvitation): Promise<void> {
