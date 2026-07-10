@@ -28,7 +28,7 @@ export interface InvitationForAcceptance {
 
 export interface MarkInvitationAccepted {
   invitationId: string;
-  userId: string;
+  adminUserId: string;
 }
 
 export interface IInvitationRepository {
@@ -62,6 +62,9 @@ export interface CreateInvitationResult {
 
 export interface AcceptInvitationInput {
   token: string;
+  email: string;
+  name: string;
+  password: string;
 }
 
 export interface RevokeInvitationInput {
