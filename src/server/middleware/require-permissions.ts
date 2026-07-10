@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { factory } from "../hono/hono-factory";
 import { Permission } from "@/lib/permissions";
 
-export function requirePermission(permissions: Permission) {
+export function requirePermissionMiddleware(permissions: Permission) {
   return factory.createMiddleware(async (c, next) => {
     const user = c.get("user");
 
