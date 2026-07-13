@@ -9,6 +9,8 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string(),
     CORS_ORIGIN: z.string(),
     RESEND_API_KEY: z.string(),
+    ADMIN_EMAIL: z.string(),
+    ADMIN_PASSWORD: z.string(),
   },
   client: {
     NEXT_PUBLIC_APP_NAME: z.string().min(2).max(100),
@@ -21,6 +23,8 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     CORS_ORIGIN: process.env.CORS_ORIGIN,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
     NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
     NEXT_PUBLIC_APP_DESCRIPTION: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
   },
