@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 
 import db from "@/server/infra/database/client";
 import { invitations } from "@/server/infra/database/schemas";
@@ -34,11 +34,12 @@ export class InvitationRepository implements IInvitationRepository {
       where: and(
         eq(invitations.email, email),
         eq(invitations.status, invitationStatus.Pending),
+        gt(invitations.expiresAt, new Date()),
       ),
     }) as Promise<PendingInvitation | undefined>;
   }
 
-  async findForAcceptance(
+  async findByHashedToken(
     tokenHash: string,
   ): Promise<InvitationForAcceptance | undefined> {
     return this.database.query.invitations.findFirst({
@@ -49,6 +50,7 @@ export class InvitationRepository implements IInvitationRepository {
         role: true,
         status: true,
         expiresAt: true,
+        acceptedAt: true,
       },
       where: eq(invitations.tokenHash, tokenHash),
     }) as Promise<InvitationForAcceptance | undefined>;
@@ -65,7 +67,12 @@ export class InvitationRepository implements IInvitationRepository {
         usedBy,
         acceptedAt: new Date(),
       })
-      .where(eq(invitations.id, invitationId));
+      .where(
+        and(
+          eq(invitations.id, invitationId),
+          eq(invitations.status, invitationStatus.Pending),
+        ),
+      );
   }
 
   async revoke(invitationId: string): Promise<void> {
@@ -73,15 +80,6 @@ export class InvitationRepository implements IInvitationRepository {
       .update(invitations)
       .set({
         status: "revoked",
-      })
-      .where(eq(invitations.id, invitationId));
-  }
-
-  async expire(invitationId: string): Promise<void> {
-    await this.database
-      .update(invitations)
-      .set({
-        status: "expired",
       })
       .where(eq(invitations.id, invitationId));
   }

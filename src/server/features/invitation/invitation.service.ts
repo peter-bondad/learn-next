@@ -23,6 +23,7 @@ import { IUserRepository } from "../user/user.interface";
 import { UserEmailAlreadyExists } from "../user/user.error";
 import { auth } from "@/lib/auth";
 import { invitationStatus } from "./invitation.constant";
+import { UserDto } from "../user/user.dto";
 
 export class InvitationService {
   constructor(
@@ -70,11 +71,11 @@ export class InvitationService {
     };
   }
 
-  async acceptInvitation(input: AcceptInvitationInput): Promise<boolean> {
+  async acceptInvitation(input: AcceptInvitationInput): Promise<UserDto> {
     const hashedToken = hashInvitationToken(input.token);
 
     const invitation =
-      await this.invitationIRepository.findForAcceptance(hashedToken);
+      await this.invitationIRepository.findByHashedToken(hashedToken);
 
     if (!invitation) {
       throw new InvitationNotFoundError();
@@ -110,7 +111,12 @@ export class InvitationService {
       usedBy: createdUser.user.id,
     });
 
-    return true;
+    return {
+      id: createdUser.user.id,
+      name: createdUser.user.name,
+      email: createdUser.user.email,
+      role: invitation.role,
+    };
   }
 
   async getInvitationForDisplay(
@@ -118,7 +124,7 @@ export class InvitationService {
   ): Promise<InvitationDisplayResult> {
     const hashedToken = hashInvitationToken(token);
     const invitation =
-      await this.invitationIRepository.findForAcceptance(hashedToken);
+      await this.invitationIRepository.findByHashedToken(hashedToken);
 
     if (!invitation) {
       return { status: "not_found" };

@@ -36,15 +36,13 @@ export interface IInvitationRepository {
 
   findPendingByEmail(email: string): Promise<PendingInvitation | undefined>;
 
-  findForAcceptance(
+  findByHashedToken(
     tokenHash: string,
   ): Promise<InvitationForAcceptance | undefined>;
 
   markAccepted(data: MarkInvitationAccepted): Promise<void>;
 
   revoke(invitationId: string): Promise<void>;
-
-  expire(invitationId: string): Promise<void>;
 }
 
 // Service layer argument types
