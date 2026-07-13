@@ -14,7 +14,6 @@ export function LoginForm() {
   const router = useRouter();
   const emailId = useId();
   const passwordId = useId();
-  const errorId = useId();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

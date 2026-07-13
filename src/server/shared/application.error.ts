@@ -1,4 +1,3 @@
-import { ZodError } from "zod";
 import { HttpStatus, HttpStatusCode } from "./http-status-code";
 
 export abstract class ApplicationError extends Error {

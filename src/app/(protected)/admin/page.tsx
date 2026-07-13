@@ -10,8 +10,8 @@ export default function DashboardPage() {
         <h1 className="text-4xl font-bold text-[#3d2413]">Overview</h1>
 
         <p className="mt-2 text-[#7b5f46]">
-          Monitor today's sales, inventory, and operational insights across your
-          coffee shop.
+          Monitor today&apos;s sales, inventory, and operational insights across
+          your coffee shop.
         </p>
       </section>
 

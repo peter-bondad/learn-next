@@ -1,5 +1,4 @@
 import { createAuthClient } from "better-auth/client";
-import { env } from "./env";
 import { adminClient } from "better-auth/client/plugins";
 import { ac, user, admin as adminPluginClient } from "./permissions";
 

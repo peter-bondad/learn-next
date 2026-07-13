@@ -34,15 +34,15 @@ export default async function AcceptInvitationPage({
               </div>
 
               <h1 className="text-4xl font-bold leading-tight">
-                You're almost
+                You&apos;re almost
                 <br />
                 ready.
               </h1>
 
               <p className="mt-5 max-w-md text-[15px] leading-7 text-[#f6eadf]">
-                Complete your invitation by creating your account. Once you're
-                finished, you'll be able to access your dashboard and start
-                managing your workspace.
+                Complete your invitation by creating your account. Once
+                you&apos;re finished, you&apos;ll be able to access your
+                dashboard and start managing your workspace.
               </p>
             </div>
 

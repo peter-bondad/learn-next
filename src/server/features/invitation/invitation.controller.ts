@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator";
 import { factory } from "@/server/hono/hono-factory";
 
 import { acceptInvitationDto, createInvitationDto } from "./invitation.dto";
