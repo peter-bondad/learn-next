@@ -8,9 +8,9 @@ import { admin } from "better-auth/plugins";
 import * as schema from "@/server/infra/database/schemas/index";
 
 export const auth = betterAuth({
-  secret: env.NEXTAUTH_SECRET,
+  secret: env.BETTER_AUTH_SECRET,
   appName: env.NEXT_PUBLIC_APP_NAME,
-  appUrl: env.NEXTAUTH_URL,
+  appUrl: env.NEXT_PUBLIC_APP_URL,
   rateLimit: {
     enabled: true,
     window: 60, // 1 minute
