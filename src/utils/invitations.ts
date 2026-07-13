@@ -22,5 +22,5 @@ export function createInvitationExpiry(): Date {
 }
 
 export function createInvitationUrl(token: string): string {
-  return new URL(`/invite/${token}`, env.NEXT_PUBLIC_APP_URL).toString();
+  return new URL(`/invite/${token}`, env.BETTER_AUTH_URL).toString();
 }
