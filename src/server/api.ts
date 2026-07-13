@@ -7,6 +7,7 @@ import { requireAuth } from "./middleware/require-auth";
 import adminInvitationRoutes from "./features/invitation/admin.routes";
 import publicInvitationRoutes from "./features/invitation/public.routes";
 import { appErrorHandler } from "./errors/app-error-handler";
+import jobRoutes from "./features/jobs/job.routes";
 
 const app = new Hono<Env>()
 
@@ -29,6 +30,10 @@ const app = new Hono<Env>()
   .onError(appErrorHandler)
 
   .route("/api/invitation", publicInvitationRoutes)
+
+  // Scheduled jobs (protected by CRON_SECRET)
+  .route("/api/jobs", jobRoutes)
+
   // admin routes
   .use("/api/admin/*", requireAuth)
   // user invitation routes (admin routes)
