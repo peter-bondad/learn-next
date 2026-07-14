@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import authClient from "@/lib/auth-client";
 import { env } from "@/lib/env";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useId, useState } from "react";
 import { toast } from "sonner";
@@ -150,16 +151,15 @@ export function LoginForm() {
               />
               Remember me
             </Label>
-            <button
-              type="button"
-              disabled={submitting}
-              onClick={() =>
-                toast.info("Password reset will be available soon.")
-              }
-              className="w-fit cursor-pointer font-medium text-[#8d5a2b] transition hover:text-[#6f3e1d] disabled:pointer-events-none disabled:opacity-50"
+            <Link
+              href="/forgot-password"
+              className={`w-fit font-medium text-[#8d5a2b] transition hover:text-[#6f3e1d] ${
+                submitting ? "pointer-events-none opacity-50" : ""
+              }`}
+              aria-disabled={submitting}
             >
               Forgot password?
-            </button>
+            </Link>
           </div>
 
           <Button
