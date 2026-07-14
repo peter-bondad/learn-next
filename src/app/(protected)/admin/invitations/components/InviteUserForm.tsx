@@ -54,7 +54,7 @@ export function InviteUserForm() {
       setMessage(nextMessage);
       setEmail("");
       setName("");
-      setRole("staff");
+      setRole(userRole.Staff);
       toast.success("Invite created.");
     } catch {
       const nextError = "Something went wrong while creating the invite.";
