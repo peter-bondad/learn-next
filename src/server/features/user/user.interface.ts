@@ -1,4 +1,4 @@
-import { UserRole } from "@/server/types/user-role.types";
+import { UserRole } from "@/server/shared/user-role.types";
 
 export interface User {
   id: string;

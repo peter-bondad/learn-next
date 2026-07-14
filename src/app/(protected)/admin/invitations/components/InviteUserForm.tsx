@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { userRole, UserRole } from "@/server/types/user-role.types";
+import { userRole, UserRole } from "@/server/shared/user-role.types";
 import { Loader2, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { toast } from "sonner";

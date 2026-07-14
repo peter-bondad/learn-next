@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userRole } from "@/server/types/user-role.types";
+import { userRole } from "@/server/shared/user-role.types";
 
 export const createInvitationDto = z.object({
   email: z.email(),

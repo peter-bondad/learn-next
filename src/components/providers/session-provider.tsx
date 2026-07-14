@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 import type { Session } from "@/lib/auth";
 import { Permission } from "@/lib/permission/permissions";
 import { hasPermission } from "@/lib/permission/has-permission";
-import { isUserRole } from "@/server/types/user-role.types";
+import { isUserRole } from "@/server/shared/user-role.types";
 
 interface SessionContextValue {
   session: Session["session"];
