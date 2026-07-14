@@ -7,6 +7,7 @@ import { ac, manager, owner, staff } from "./permission/permissions";
 import { admin } from "better-auth/plugins";
 import * as schema from "@/server/infra/database/schemas/index";
 import { container } from "@/server/container";
+import { userRole } from "@/server/types/user-role.types";
 
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
@@ -72,6 +73,7 @@ export const auth = betterAuth({
         manager,
         staff,
       },
+      defaultRole: userRole.Staff, // default role to "staff"
     }),
   ],
 });
