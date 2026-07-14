@@ -6,12 +6,22 @@ import db from "@/server/infra/database/client";
 import { ac, user, admin as adminPlugin } from "./permissions";
 import { admin } from "better-auth/plugins";
 import * as schema from "@/server/infra/database/schemas/index";
+import { container } from "@/server/container";
 
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
   appName: env.NEXT_PUBLIC_APP_NAME,
   trustedOrigins: ["https://*.vercel.app", env.BETTER_AUTH_URL],
+  session: {
+    expiresIn: 60 * 60 * 12, // 12 hours — roughly one shift/business day
+    updateAge: 60 * 60 * 1, // 1 hour — re-extend expiry every hour of activity
+    freshAge: 60 * 15, // 15 minutes — for sensitive actions (see below)
+    cookieCache: {
+      enabled: true,
+      maxAge: 60, // Instant revocation matters more than shaving a DB query (temporary)
+    },
+  },
   rateLimit: {
     enabled: true,
     window: 60, // 1 minute
@@ -38,8 +48,6 @@ export const auth = betterAuth({
     schema,
   }),
   emailAndPassword: {
-    minPasswordLength: 8,
-    maxPasswordLength: 128,
     requireEmailVerification: false,
     enabled: true,
     password: {
