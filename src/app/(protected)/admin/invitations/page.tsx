@@ -1,4 +1,4 @@
-import { InviteUserForm } from "@/app/components/admin/InviteUserForm";
+import { InviteUserForm } from "@/app/(protected)/admin/invitations/components/InviteUserForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { ensurePermission } from "@/lib/auth-guard";
 import { MailPlus } from "lucide-react";

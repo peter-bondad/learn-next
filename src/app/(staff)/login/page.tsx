@@ -1,5 +1,5 @@
-import { AuthHero } from "@/app/components/auth/AuthHero";
-import { LoginForm } from "@/app/components/auth/LoginForm";
+import { AuthHero } from "@/app/(staff)/login/components/AuthHero";
+import { LoginForm } from "@/app/(staff)/login/components/LoginForm";
 
 export default function Login() {
   return (

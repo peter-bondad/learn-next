@@ -1,7 +1,7 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "../components/dashboard/appsidebar";
-import { DashboardHeader } from "../components/dashboard/dashboard-header";
 import { requireSession } from "@/server/auth/require-session";
+import { AppSidebar } from "./admin/menu/components/appsidebar";
+import { DashboardHeader } from "./admin/menu/components/dashboard-header";
 
 export default async function ProtectedLayout({
   children,

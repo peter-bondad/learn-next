@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from "@/app/components/staff/reset-password-form";
+import { ResetPasswordForm } from "@/app/(staff)/reset-password/components/reset-password-form";
 import { Coffee } from "lucide-react";
 
 export default function ResetPasswordPage() {
