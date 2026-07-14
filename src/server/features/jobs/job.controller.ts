@@ -11,6 +11,9 @@ export const expireInvitationsController = factory.createHandlers(async (c) => {
 
   const expiredCount = await container.invitationService.expireInvitations();
 
+  if (env.NODE_ENV === "development")
+    console.log("Expired invitations : ", expiredCount);
+
   return c.json({
     message: "Expired invitations processed successfully.",
     expiredCount,
