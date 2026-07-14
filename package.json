@@ -16,7 +16,8 @@
     "db:migrate:prod": "dotenv -e .env.prod drizzle-kit migrate",
     "db:generate:prod": "dotenv -e .env.prod drizzle-kit generate",
     "db:studio:prod": "dotenv -e .env.prod drizzle-kit studio",
-    "db:sync-auth": "pnpm run db:auth-gen && pnpm run db:generate && pnpm run db:migrate"
+    "db:sync-auth": "pnpm run db:auth-gen && pnpm run db:generate && pnpm run db:migrate",
+    "db:seed": "dotenv -e .env -- tsx src/server/infra/database/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
