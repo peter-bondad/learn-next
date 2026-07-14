@@ -111,7 +111,7 @@ export function InviteUserForm() {
         >
           <option value="owner">Owner</option>
           <option value="manager">Manager</option>
-          <option value="staff">staff</option>
+          <option value="staff">Staff</option>
         </select>
       </div>
 
