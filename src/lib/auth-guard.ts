@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import type { Permission } from "@/lib/permissions";
+import type { Permission } from "@/lib/permission/permissions";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

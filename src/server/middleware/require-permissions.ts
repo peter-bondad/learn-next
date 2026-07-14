@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { factory } from "../hono/hono-factory";
-import { Permission } from "@/lib/permissions";
+import { Permission } from "@/lib/permission/permissions";
 
 export function requirePermissionMiddleware(permissions: Permission) {
   return factory.createMiddleware(async (c, next) => {
