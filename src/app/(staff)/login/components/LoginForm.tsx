@@ -5,7 +5,6 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import authClient from "@/lib/auth-client";
-import { env } from "@/lib/env";
 import { UserRole, userRole } from "@/server/shared/user-role.types";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
