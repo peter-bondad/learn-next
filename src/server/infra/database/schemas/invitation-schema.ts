@@ -1,7 +1,14 @@
-import { index, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { users } from "./auth-schema";
 import { invitationStatusEnum, userRoleEnum } from "./schema-pg.enum";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const invitations = pgTable(
   "invitations",
@@ -29,6 +36,9 @@ export const invitations = pgTable(
     index("invitations_createdBy_idx").on(table.createdBy),
     index("invitations_tokenHash_idx").on(table.tokenHash),
     index("invitations_status_idx").on(table.status),
+    uniqueIndex("invitations_pending_email_unique_idx")
+      .on(table.email)
+      .where(sql`${table.status} = 'pending'`),
   ],
 );
 
