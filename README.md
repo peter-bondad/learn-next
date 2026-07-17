@@ -19,7 +19,7 @@ It's a portfolio project exploring scalable architecture and end-to-end type saf
 Instead of treating each module as an isolated CRUD app, BrewFlow keeps inventory as the single source of truth that products, menu, POS, orders, and reporting all read from:
 
 ```text
-Inventory → Products → Menu → Point of Sale → Orders → Dashboard & Reports
+Inventory → Products & Variants → Menu → Point of Sale → Orders → Dashboard & Reports
 ```
 
 ---
@@ -54,6 +54,13 @@ Inventory → Products → Menu → Point of Sale → Orders → Dashboard & Rep
 **Background Jobs**
 
 - Scheduled invitation expiration via Vercel Cron Jobs
+
+**Data Model (in progress)**
+
+- Product catalog separated from sellable variants (size/SKU/price per variant)
+- Cart and order schemas keyed off variants, not base products
+- Ingredient-level inventory schema with a recipe system (`productIngredients`) mapping each variant to the raw materials it consumes
+- Append-only inventory transaction ledger for auditable stock changes (restock, sale deduction, adjustment, waste, return)
 
 ---
 
@@ -103,8 +110,8 @@ src
 **Prerequisites:** Node.js 20+, pnpm, PostgreSQL
 
 ```bash
-git clone https://github.com/peter-bondad/learn-next.git
-cd learn-next
+git clone https://github.com/peter-bondad/brew-flow.git
+cd brew-flow
 pnpm install
 ```
 
@@ -126,10 +133,11 @@ NEXT_PUBLIC_APP_NAME=BrewFlow
 NEXT_PUBLIC_APP_DESCRIPTION=Coffee Shop Management Platform
 ```
 
-Initialize the database (generates Better Auth schema + applies migrations):
+Generate the Better Auth schema, then apply migrations:
 
 ```bash
-pnpm db:sync-auth
+pnpm db:auth-gen
+pnpm db:sync:schema
 ```
 
 Start the dev server:
@@ -144,30 +152,45 @@ App runs at `http://localhost:3000`.
 
 ## Useful Commands
 
-| Command             | Description                                      |
-| ------------------- | ------------------------------------------------ |
-| `pnpm dev`          | Start the development server                     |
-| `pnpm build`        | Build the application                            |
-| `pnpm start`        | Start the production server                      |
-| `pnpm lint`         | Run ESLint                                       |
-| `pnpm db:generate`  | Generate Drizzle migrations                      |
-| `pnpm db:migrate`   | Apply database migrations                        |
-| `pnpm db:studio`    | Open Drizzle Studio                              |
-| `pnpm db:sync-auth` | Generate Better Auth schema and apply migrations |
+| Command                | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `pnpm dev`             | Start the development server                             |
+| `pnpm build`           | Build the application                                    |
+| `pnpm start`           | Start the production server                              |
+| `pnpm lint`            | Run ESLint                                               |
+| `pnpm db:auth-gen`     | Generate Better Auth schema from `src/lib/auth.ts`       |
+| `pnpm db:generate`     | Generate Drizzle migrations                              |
+| `pnpm db:migrate`      | Apply database migrations                                |
+| `pnpm db:push`         | Push schema changes directly (no migration files)        |
+| `pnpm db:studio`       | Open Drizzle Studio                                      |
+| `pnpm db:sync:schema`  | Generate + apply migrations in one step                  |
+| `pnpm db:seed`         | Seed local database                                      |
+| `pnpm db:push:prod`    | Push schema changes to production                        |
+| `pnpm db:migrate:prod` | Apply migrations to production                           |
+| `pnpm db:seed:prod`    | Seed production database (initial administrator account) |
+| `pnpm db:reset`        | Tear down and recreate local Docker database             |
 
 ---
 
 ## Roadmap
 
-- **Product Management** — CRUD, categories, images, status
-- **Inventory** — stock management, adjustments, history, audit trail, low stock alerts
+- **Product Management** — CRUD, categories, images, variants (sizes/SKU), status
+- **Inventory** — stock management, adjustments, transaction history/audit trail, low stock detection
 - **Menu** — categories, availability, search & filtering
-- **POS** — cart, checkout, discounts, receipts, payment processing
+- **POS** — cart, checkout, discounts, receipts, payment processing, inventory deduction on order completion
 - **Dashboard** — revenue overview, sales & inventory analytics, best sellers, recent orders
 - **Employee Management** — accounts, roles, permissions, activity logs
 - **Customer Management** — profiles, purchase history, loyalty program
 - **Reporting** — sales/inventory reports, PDF & Excel export
-- **Notifications** — low stock alerts, daily summaries, email
+- **Notifications** — low stock digest emails (Resend, scheduled job), daily summaries
+
+### Future / Exploratory
+
+- **AI-assisted reordering** — suggest restock quantities based on historical sales velocity per ingredient
+- **Natural language reporting** — ask questions like "what sold best last week" against the reporting layer instead of navigating dashboards
+- **AI-assisted menu content** — generate product descriptions from a name/category as a starting draft for staff to edit
+- **Sales anomaly detection** — flag unusual drops/spikes in a product's sales for manager review
+- **n8n automation layer** — optional integration for multi-channel alert routing (Slack, SMS, email) and workflow automation beyond what the core notification job handles
 
 ---
 
