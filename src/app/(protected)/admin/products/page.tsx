@@ -1,18 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Coffee, CupSoda, Plus, Star } from "lucide-react";
+import { Coffee, CupSoda, Star } from "lucide-react";
 import type { SortingState } from "@tanstack/react-table";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusCard } from "@/components/dashboard/status-card";
 import { MenuTable } from "@/components/menu/menu-table";
+import { ProductToolbar } from "@/components/products/product-toolbar";
 import { useProducts } from "@/lib/api/product/product.query";
 import type { ProductListItem } from "@/server/shared/product/product.interface";
+import { ProductFormDialog } from "./components/product-form-dialog";
+import { ArchiveConfirmDialog } from "./components/archive-confirm-dialog";
 
 type MenuItem = {
+  id: string;
   name: string;
   category: string;
   price: string;
@@ -25,6 +26,7 @@ function formatPrice(cents: number): string {
 
 function mapProductToMenuItem(product: ProductListItem): MenuItem {
   return {
+    id: product.id,
     name: product.name,
     category: product.category,
     price: formatPrice(product.primaryVariant?.price ?? 0),
@@ -35,6 +37,8 @@ function mapProductToMenuItem(product: ProductListItem): MenuItem {
 export default function MenuPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [search, setSearch] = useState("");
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [archivingProduct, setArchivingProduct] = useState<{ id: string; name: string } | null>(null);
 
   const { data, isLoading, error } = useProducts({
     limit: 100,
@@ -55,12 +59,11 @@ export default function MenuPage() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="flex h-full flex-col">
       {/* Hero */}
-
       <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-6 text-[#fff9f2] shadow-lg">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold">Product Management</h1>
+          <h1 className="text-3xl font-bold">Products</h1>
           <p className="max-w-2xl text-sm text-[#f6e7d4]">
             Manage menu items, categories, pricing, and availability across
             your coffee shop.
@@ -69,8 +72,7 @@ export default function MenuPage() {
       </div>
 
       {/* Stats */}
-
-      <section className="grid grid-cols-2 gap-4 md:grid-cols-3">
+      <section className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
         <StatusCard
           title="Total Items"
           value={String(total)}
@@ -93,30 +95,17 @@ export default function MenuPage() {
         />
       </section>
 
-      {/* Table */}
-
-      <div className="flex flex-1 min-h-0 flex-col gap-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-[#3d2413]">
-              <Coffee className="h-5 w-5 text-[#8d5a2b]" />
-              Products
-            </h2>
-
-            <p className="mt-1 text-sm text-[#7b5f46]">
-              Browse and manage your coffee shop product catalog..
-            </p>
-          </div>
-
-          <div className="relative w-full md:w-80">
-            <Input
-              placeholder="Search products..."
-              className="pl-9"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
+      {/* Toolbar + Table */}
+      <div className="mt-6 flex flex-1 min-h-0 flex-col gap-4">
+        <ProductToolbar
+          search={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+          }}
+          onAddProduct={() => {
+            // TODO: open create product dialog if added later
+          }}
+        />
 
         <div className="flex-1 min-h-0">
           <MenuTable
@@ -125,9 +114,28 @@ export default function MenuPage() {
             error={error ? { message: error.message } : undefined}
             sorting={sorting}
             onSortingChange={setSorting}
+            onEdit={(item) => setEditingProductId(item.id)}
+            onArchive={(item) => setArchivingProduct({ id: item.id, name: item.name })}
           />
         </div>
       </div>
+
+      <ProductFormDialog
+        open={!!editingProductId}
+        onOpenChange={(open) => {
+          if (!open) setEditingProductId(null);
+        }}
+        productId={editingProductId}
+      />
+
+      <ArchiveConfirmDialog
+        open={!!archivingProduct}
+        onOpenChange={(open) => {
+          if (!open) setArchivingProduct(null);
+        }}
+        productId={archivingProduct?.id ?? ""}
+        productName={archivingProduct?.name ?? ""}
+      />
     </div>
   );
 }
