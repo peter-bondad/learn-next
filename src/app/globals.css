@@ -49,39 +49,41 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: #fffaf5;
+  --foreground: #3d2413;
+  --card: #fffdf9;
+  --card-foreground: #3d2413;
+  --popover: #fffdf9;
+  --popover-foreground: #3d2413;
+  --primary: #6f3e1d;
+  --primary-foreground: #fff8ef;
+  --secondary: #f4e2cd;
+  --secondary-foreground: #4a2c1a;
+  --muted: #fbf3eb;
+  --muted-foreground: #7b5f46;
+  --accent: #f8efe4;
+  --accent-foreground: #4a2c1a;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: #e4c8a7;
+  --input: #e4c8a7;
+  --ring: #e0b887;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #fffaf5;
+  --sidebar-foreground: #3d2413;
+  --sidebar-primary: #6f3e1d;
+  --sidebar-primary-foreground: #fff8ef;
+  --sidebar-accent: #fbf3eb;
+  --sidebar-accent-foreground: #5d3719;
+  --sidebar-border: #e4c8a7;
+  --sidebar-ring: #e0b887;
 }
+
+/* .dark block unchanged — no functional dark-mode toggle exists yet */
 
 .dark {
   --background: oklch(0.145 0 0);
@@ -127,4 +129,23 @@
   html {
     @apply font-sans;
   }
+  @layer utilities {
+    .bg-brew-hero {
+      background: linear-gradient(
+        135deg,
+        #4a2b1c 0%,
+        #6e3d1f 45%,
+        #c67e3f 100%
+      );
+    }
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
 }

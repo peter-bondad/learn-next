@@ -1,4 +1,4 @@
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 
 export function SecuritySettings() {
   return (
