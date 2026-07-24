@@ -31,21 +31,26 @@ export function TopSellingItems() {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Top Selling Items</CardTitle>
 
-        <Button variant="outline">View all</Button>
+        <Button variant="outline" className="cursor-pointer">
+          View all
+        </Button>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4">
         {items.map((item, index) => (
-          <div key={item.name} className="flex items-center justify-between">
+          <div
+            key={item.name}
+            className="flex items-center justify-between gap-4"
+          >
             <div>
-              <p className="font-medium">
+              <p className="font-medium text-[#3d2413]">
                 {index + 1}. {item.name}
               </p>
 
               <p className="text-sm text-[#7b5f46]">{item.sold} sold</p>
             </div>
 
-            <p className="font-semibold">{item.revenue}</p>
+            <p className="font-semibold text-[#3d2413]">{item.revenue}</p>
           </div>
         ))}
       </CardContent>

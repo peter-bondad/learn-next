@@ -35,22 +35,37 @@ export function RecentOrders() {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Recent Orders</CardTitle>
 
-        <Button variant="outline">View all</Button>
+        <Button variant="outline" className="cursor-pointer">
+          View all
+        </Button>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4">
         {orders.map((order) => (
-          <div key={order.id} className="flex items-center justify-between">
+          <div
+            key={order.id}
+            className="flex items-center justify-between gap-4"
+          >
             <div>
-              <p className="font-medium">{order.id}</p>
+              <p className="font-medium text-[#3d2413]">{order.id}</p>
 
               <p className="text-sm text-[#7b5f46]">{order.customer}</p>
             </div>
 
             <div className="text-right">
-              <p className="font-semibold">{order.total}</p>
+              <p className="font-semibold text-[#3d2413]">{order.total}</p>
 
-              <span className="text-xs text-green-600">{order.status}</span>
+              <span
+                className={`text-xs font-medium ${
+                  order.status === "Completed"
+                    ? "text-[#2d6a32]"
+                    : order.status === "Preparing"
+                      ? "text-[#8d5a2b]"
+                      : "text-[#b45309]"
+                }`}
+              >
+                {order.status}
+              </span>
             </div>
           </div>
         ))}

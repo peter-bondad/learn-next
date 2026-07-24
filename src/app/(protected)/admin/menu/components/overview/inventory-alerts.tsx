@@ -26,16 +26,19 @@ export function InventoryAlerts() {
         <CardTitle>Inventory Alerts</CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {inventory.map((item) => (
-          <div key={item.name} className="flex items-center justify-between">
-            <span>{item.name}</span>
+          <div
+            key={item.name}
+            className="flex items-center justify-between gap-4"
+          >
+            <span className="text-sm text-[#3d2413]">{item.name}</span>
 
             <span
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
                 item.stock === "Low"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-green-100 text-green-700"
+                  ? "bg-[#fce8e4] text-[#8a2be2]"
+                  : "bg-[#e8f5e2] text-[#2d6a32]"
               }`}
             >
               {item.stock}

@@ -1,7 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Coffee, CupSoda, Search, Plus, Star } from "lucide-react";
+import { Coffee, CupSoda, Plus, Star } from "lucide-react";
+import type { SortingState } from "@tanstack/react-table";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatusCard } from "@/components/dashboard/status-card";
+import { MenuTable } from "@/components/menu/menu-table";
 
 const menuItems = [
   {
@@ -31,11 +38,13 @@ const menuItems = [
 ];
 
 export default function MenuPage() {
-  return (
-    <div className="space-y-8">
-      {/* Header */}
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-      <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-6 text-foreground shadow-lg">
+  return (
+    <div className="flex h-full flex-col">
+      {/* Hero */}
+
+      <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-6 text-[#fff9f2] shadow-lg">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-[#f5d5ae]">
@@ -59,106 +68,58 @@ export default function MenuPage() {
 
       {/* Stats */}
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-[#e4c8a7]">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Total Items</CardTitle>
-            <CupSoda className="h-5 w-5 text-[#8d5a2b]" />
-          </CardHeader>
+      <section className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+        <StatusCard
+          title="Total Items"
+          value="42"
+          description="All menu entries"
+          icon={CupSoda}
+        />
 
-          <CardContent>
-            <p className="text-4xl font-bold text-[#3d2413]">42</p>
-          </CardContent>
-        </Card>
+        <StatusCard
+          title="Best Seller"
+          value="Hazelnut Latte"
+          description="Top performing item"
+          icon={Star}
+        />
 
-        <Card className="border-[#e4c8a7]">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Best Seller</CardTitle>
-            <Star className="h-5 w-5 text-yellow-500" />
-          </CardHeader>
-
-          <CardContent>
-            <p className="font-semibold text-[#3d2413]">Hazelnut Latte</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#e4c8a7]">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Available Items</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-4xl font-bold text-[#3d2413]">38</p>
-          </CardContent>
-        </Card>
-      </div>
+        <StatusCard
+          title="Available Items"
+          value="38"
+          description="Currently in stock"
+          icon={Coffee}
+        />
+      </section>
 
       {/* Table */}
 
-      <Card className="border-[#e4c8a7]">
-        <CardHeader className="space-y-5">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2 text-[#3d2413]">
-                <Coffee className="h-5 w-5 text-[#8d5a2b]" />
-                Menu Items
-              </CardTitle>
+      <div className="mt-6 flex flex-1 min-h-0 flex-col gap-4">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-[#3d2413]">
+              <Coffee className="h-5 w-5 text-[#8d5a2b]" />
+              Menu Items
+            </h2>
 
-              <p className="mt-1 text-sm text-[#7b5f46]">
-                Browse and manage your coffee shop menu.
-              </p>
-            </div>
-
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-              <Input placeholder="Search menu..." className="pl-10" />
-            </div>
+            <p className="mt-1 text-sm text-[#7b5f46]">
+              Browse and manage your coffee shop menu.
+            </p>
           </div>
-        </CardHeader>
 
-        <CardContent className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b text-left text-xs font-semibold uppercase tracking-wide text-[#8d6b4d]">
-                <th className="py-4">Name</th>
-                <th className="py-4">Category</th>
-                <th className="py-4">Price</th>
-                <th className="py-4">Status</th>
-              </tr>
-            </thead>
+          <div className="relative w-full md:w-80">
+            <Input placeholder="Search menu..." className="pl-9" />
+          </div>
+        </div>
 
-            <tbody>
-              {menuItems.map((item) => (
-                <tr
-                  key={item.name}
-                  className="border-b transition-colors hover:bg-[#fcf7f1] last:border-none"
-                >
-                  <td className="py-5 font-medium text-[#3d2413]">
-                    {item.name}
-                  </td>
-
-                  <td className="text-[#6f5640]">{item.category}</td>
-
-                  <td className="font-medium">{item.price}</td>
-
-                  <td>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                        item.status === "Available"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
+        <div className="flex-1 min-h-0">
+          <MenuTable
+            data={menuItems}
+            sorting={sorting}
+            onSortingChange={setSorting}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
