@@ -20,6 +20,15 @@ export function MenuTable({
 }: MenuTableProps) {
   const columns = useMemo(() => createMenuColumns(actions), [actions]);
 
+  const colGroup = (
+    <colgroup>
+      <col style={{ width: "35%" }} />
+      <col style={{ width: "25%" }} />
+      <col style={{ width: "20%" }} />
+      <col style={{ width: "auto" }} />
+    </colgroup>
+  );
+
   return (
     <DataTable
       columns={columns}
@@ -29,6 +38,7 @@ export function MenuTable({
       sorting={actions.sorting}
       onSortingChange={actions.onSortingChange}
       maxHeight={maxHeight}
+      colGroup={colGroup}
     />
   );
 }

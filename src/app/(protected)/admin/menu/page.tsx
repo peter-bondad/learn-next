@@ -41,34 +41,22 @@ export default function MenuPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="space-y-8">
       {/* Hero */}
 
       <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-6 text-[#fff9f2] shadow-lg">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-[#f5d5ae]">
-              BrewFlow
-            </p>
-
-            <h1 className="mt-2 text-3xl font-bold">Menu Management</h1>
-
-            <p className="mt-1 max-w-2xl text-sm text-[#f6e7d4]">
-              Manage menu items, categories, pricing, and availability across
-              your coffee shop.
-            </p>
-          </div>
-
-          <Button className="cursor-pointer bg-[#fff8ef] text-[#5b3318] hover:bg-[#f4eadf]">
-            <Plus className="mr-2 h-4 w-4" />
-            New Menu Item
-          </Button>
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-bold">Menu Management</h1>
+          <p className="max-w-2xl text-sm text-[#f6e7d4]">
+            Manage menu items, categories, pricing, and availability across
+            your coffee shop.
+          </p>
         </div>
       </div>
 
       {/* Stats */}
 
-      <section className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+      <section className="grid grid-cols-2 gap-4 md:grid-cols-3">
         <StatusCard
           title="Total Items"
           value="42"
@@ -93,7 +81,7 @@ export default function MenuPage() {
 
       {/* Table */}
 
-      <div className="mt-6 flex flex-1 min-h-0 flex-col gap-4">
+      <div className="flex flex-1 min-h-0 flex-col gap-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="flex items-center gap-2 text-lg font-semibold text-[#3d2413]">
@@ -122,4 +110,3 @@ export default function MenuPage() {
     </div>
   );
 }
-

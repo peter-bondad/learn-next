@@ -25,6 +25,7 @@ type DataTableProps<TData, TValue> = {
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   maxHeight?: string;
+  colGroup?: React.ReactNode;
 };
 
 export function DataTable<TData, TValue>({
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   sorting,
   onSortingChange,
   maxHeight,
+  colGroup,
 }: DataTableProps<TData, TValue>) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -58,6 +60,8 @@ export function DataTable<TData, TValue>({
       style={maxHeight ? { maxHeight, overflow: "hidden", display: "flex", flexDirection: "column" } : undefined}
     >
       <Table>
+        {colGroup}
+
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

@@ -32,6 +32,18 @@ export function InventoryTable({
 }: InventoryTableProps) {
   const columns = useMemo(() => createInventoryColumns(actions), [actions]);
 
+  const colGroup = (
+    <colgroup>
+      <col style={{ width: "25%" }} />
+      <col style={{ width: "12%" }} />
+      <col style={{ width: "12%" }} />
+      <col style={{ width: "12%" }} />
+      <col style={{ width: "12%" }} />
+      <col style={{ width: "15%" }} />
+      <col style={{ width: "auto" }} />
+    </colgroup>
+  );
+
   const hasMore = data.length >= limit;
   const hasPrev = page > 0;
 
@@ -45,6 +57,7 @@ export function InventoryTable({
         sorting={actions.sorting}
         onSortingChange={actions.onSortingChange}
         maxHeight={maxHeight}
+        colGroup={colGroup}
       />
 
       <div className="flex items-center justify-between pt-4">
