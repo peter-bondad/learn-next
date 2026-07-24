@@ -17,6 +17,7 @@ type InventoryTableProps = {
   page: number;
   onPageChange: (page: number) => void;
   limit: number;
+  maxHeight?: string;
 } & InventoryTableActions;
 
 export function InventoryTable({
@@ -26,6 +27,7 @@ export function InventoryTable({
   page,
   onPageChange,
   limit,
+  maxHeight = "100%",
   ...actions
 }: InventoryTableProps) {
   const columns = useMemo(() => createInventoryColumns(actions), [actions]);
@@ -34,7 +36,7 @@ export function InventoryTable({
   const hasPrev = page > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-full flex-col">
       <DataTable
         columns={columns}
         data={data}
@@ -42,9 +44,10 @@ export function InventoryTable({
         error={error}
         sorting={actions.sorting}
         onSortingChange={actions.onSortingChange}
+        maxHeight={maxHeight}
       />
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-4">
         <Button
           variant="outline"
           size="sm"

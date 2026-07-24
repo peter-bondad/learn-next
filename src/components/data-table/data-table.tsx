@@ -24,6 +24,7 @@ type DataTableProps<TData, TValue> = {
   error?: { message: string };
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
+  maxHeight?: string;
 };
 
 export function DataTable<TData, TValue>({
@@ -33,6 +34,7 @@ export function DataTable<TData, TValue>({
   error,
   sorting,
   onSortingChange,
+  maxHeight,
 }: DataTableProps<TData, TValue>) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -51,7 +53,10 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border">
+    <div
+      className="rounded-md border"
+      style={maxHeight ? { maxHeight, overflow: "hidden", display: "flex", flexDirection: "column" } : undefined}
+    >
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -70,7 +75,9 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
 
-        <TableBody>
+        <TableBody
+          style={maxHeight ? { overflowY: "auto", flex: 1 } : undefined}
+        >
           {error ? (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center text-destructive">

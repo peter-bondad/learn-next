@@ -14,7 +14,7 @@ export default async function ProtectedLayout({
     <SessionProvider session={session}>
       <SidebarProvider>
         <AppSidebar user={session.user} />
-        <SidebarInset className="h-screen overflow-hidden">
+        <SidebarInset className="flex h-screen flex-col overflow-hidden">
           <main className="flex-1 overflow-y-auto bg-[#fffaf5] px-8 py-6">
             {children}
           </main>

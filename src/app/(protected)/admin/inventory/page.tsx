@@ -58,18 +58,18 @@ export default function InventoryPage() {
   );
 
   return (
-    <div className="space-y-8">
-      <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-8 text-[#fff9f2] shadow-lg">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold">Inventory</h1>
-          <p className="max-w-2xl text-[#f6e7d4]">
+    <div className="flex h-full flex-col">
+      <div className="rounded-3xl bg-[linear-gradient(135deg,#4a2b1c_0%,#6e3d1f_45%,#c67e3f_100%)] p-6 text-[#fff9f2] shadow-lg">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-bold">Inventory</h1>
+          <p className="max-w-2xl text-sm text-[#f6e7d4]">
             Manage ingredients, monitor stock levels, and track inventory
             movements.
           </p>
         </div>
       </div>
 
-      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatusCard
           title="Total Ingredients"
           value={String(stats.total)}
@@ -99,36 +99,40 @@ export default function InventoryPage() {
         />
       </section>
 
-      <InventoryToolbar
-        search={filters.search}
-        lowStockOnly={filters.lowStockOnly}
-        onSearchChange={(search) => {
-          setFilters((prev) => ({ ...prev, search }));
-          setPage(0);
-        }}
-        onLowStockOnlyChange={(lowStockOnly) => {
-          setFilters((prev) => ({ ...prev, lowStockOnly }));
-          setPage(0);
-        }}
-        onAddIngredient={() => setEditingIngredient({} as Ingredient)}
-      />
+      <div className="mt-6 flex flex-1 min-h-0 flex-col gap-4">
+        <InventoryToolbar
+          search={filters.search}
+          lowStockOnly={filters.lowStockOnly}
+          onSearchChange={(search) => {
+            setFilters((prev) => ({ ...prev, search }));
+            setPage(0);
+          }}
+          onLowStockOnlyChange={(lowStockOnly) => {
+            setFilters((prev) => ({ ...prev, lowStockOnly }));
+            setPage(0);
+          }}
+          onAddIngredient={() => setEditingIngredient({} as Ingredient)}
+        />
 
-      <InventoryTable
-        data={ingredients}
-        loading={isPending}
-        error={error ? { message: error.message } : undefined}
-        page={page}
-        onPageChange={setPage}
-        limit={LIMIT}
-        sorting={sorting}
-        onSortingChange={setSorting}
-        onEdit={setEditingIngredient}
-        onRestock={setRestockingIngredient}
-        onAdjustStock={setAdjustingIngredient}
-        onViewHistory={(ingredient) => {
-          console.log("History", ingredient);
-        }}
-      />
+        <div className="flex-1 min-h-0">
+          <InventoryTable
+            data={ingredients}
+            loading={isPending}
+            error={error ? { message: error.message } : undefined}
+            page={page}
+            onPageChange={setPage}
+            limit={LIMIT}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            onEdit={setEditingIngredient}
+            onRestock={setRestockingIngredient}
+            onAdjustStock={setAdjustingIngredient}
+            onViewHistory={(ingredient) => {
+              console.log("History", ingredient);
+            }}
+          />
+        </div>
+      </div>
 
       <IngredientFormDialog
         open={!!editingIngredient}

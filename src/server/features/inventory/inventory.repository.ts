@@ -6,6 +6,7 @@ import {
   ingredients,
   inventoryTransactions,
 } from "@/server/infra/database/schemas";
+import { logger } from "@/server/logger";
 
 import type {
   ApplyStockChangeInput,
@@ -25,6 +26,7 @@ export class InventoryRepository implements IInventoryRepository {
   async findAllIngredients(
     filter: ListIngredientsFilter,
   ): Promise<{ data: Ingredient[]; stats: InventoryStats }> {
+    logger.info({ filter }, "Querying ingredients");
     const conditions: unknown[] = [];
 
     if (!filter.includeInactive) {
@@ -76,6 +78,7 @@ export class InventoryRepository implements IInventoryRepository {
       }),
     ])) as [Ingredient[], Ingredient[]];
 
+    logger.info({ count: data.length, stats: computeStats(allData) }, "Ingredients queried");
     return { data, stats: computeStats(allData) };
   }
 
