@@ -6,6 +6,7 @@ import {
 import type {
   IInventoryRepository,
   Ingredient,
+  InventoryStats,
   InventoryTransaction,
 } from "../../shared/inventory/inventory.interface";
 import { inventoryTransactionType } from "../../shared/inventory/inventory.constant";
@@ -23,7 +24,7 @@ export class InventoryService {
 
   async listIngredients(
     query: ListIngredientsQueryRequest,
-  ): Promise<Ingredient[]> {
+  ): Promise<{ data: Ingredient[]; stats: InventoryStats }> {
     return this.inventoryRepository.findAllIngredients(query);
   }
 

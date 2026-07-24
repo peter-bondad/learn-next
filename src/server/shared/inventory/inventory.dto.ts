@@ -76,6 +76,8 @@ export const listIngredientsQueryRequest = z
       .enum(["true", "false"])
       .optional()
       .transform((val) => val === "true"),
+    sortBy: z.string().max(50).optional(),
+    sortOrder: z.enum(["asc", "desc"]).default("asc").optional(),
     limit: z.coerce.number().int().min(1).max(100).default(50),
     offset: z.coerce.number().int().min(0).default(0),
   })

@@ -15,9 +15,9 @@ export const listIngredientsController = factory.createHandlers(
   validator("query", listIngredientsQueryRequest),
   async (c) => {
     const query = c.req.valid("query");
-    const data = await container.inventoryService.listIngredients(query);
+    const { data, stats } = await container.inventoryService.listIngredients(query);
 
-    return c.json({ data });
+    return c.json({ data, stats });
   },
 );
 

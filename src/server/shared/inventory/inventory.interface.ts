@@ -52,6 +52,8 @@ export interface ListIngredientsFilter {
   search?: string;
   lowStockOnly: boolean;
   includeInactive: boolean;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
   limit: number;
   offset: number;
 }
@@ -74,8 +76,15 @@ export interface ListTransactionsFilter {
   offset: number;
 }
 
+export interface InventoryStats {
+  total: number;
+  lowStock: number;
+  outOfStock: number;
+  totalValue: number;
+}
+
 export interface IInventoryRepository {
-  findAllIngredients(filter: ListIngredientsFilter): Promise<Ingredient[]>;
+  findAllIngredients(filter: ListIngredientsFilter): Promise<{ data: Ingredient[]; stats: InventoryStats }>;
   findIngredientById(id: string): Promise<Ingredient | undefined>;
   findIngredientBySku(sku: string): Promise<Ingredient | undefined>;
   createIngredient(data: CreateIngredientData): Promise<Ingredient>;

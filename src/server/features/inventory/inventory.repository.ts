@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, ilike, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, or, sql } from "drizzle-orm";
 
 import db from "@/server/infra/database/client";
 import {
@@ -12,6 +12,7 @@ import type {
   CreateIngredientData,
   IInventoryRepository,
   Ingredient,
+  InventoryStats,
   InventoryTransaction,
   ListIngredientsFilter,
   ListTransactionsFilter,
@@ -23,8 +24,8 @@ export class InventoryRepository implements IInventoryRepository {
 
   async findAllIngredients(
     filter: ListIngredientsFilter,
-  ): Promise<Ingredient[]> {
-    const conditions = [];
+  ): Promise<{ data: Ingredient[]; stats: InventoryStats }> {
+    const conditions: unknown[] = [];
 
     if (!filter.includeInactive) {
       conditions.push(eq(ingredients.isActive, true));
@@ -40,18 +41,42 @@ export class InventoryRepository implements IInventoryRepository {
     }
 
     if (filter.lowStockOnly) {
-      // "low stock" = current stock has dropped to or below the reorder point
       conditions.push(
-        sql`${ingredients.currentStock} <= ${ingredients.restockQuantity}`,
+        sql`${ingredients.currentStock} <= ${ingredients.minimumStockLevel}`,
       );
     }
 
-    return this.database.query.ingredients.findMany({
-      where: conditions.length ? and(...conditions) : undefined,
-      orderBy: (table, { asc }) => [asc(table.name)],
-      limit: filter.limit,
-      offset: filter.offset,
-    }) as Promise<Ingredient[]>;
+    const sortColumn =
+      filter.sortBy === "sku"
+        ? ingredients.sku
+        : filter.sortBy === "currentStock"
+          ? ingredients.currentStock
+          : filter.sortBy === "minimumStockLevel"
+            ? ingredients.minimumStockLevel
+            : filter.sortBy === "averageUnitCost"
+              ? ingredients.averageUnitCost
+              : ingredients.name;
+
+    const orderBy =
+      filter.sortOrder === "desc" ? [desc(sortColumn)] : [asc(sortColumn)];
+
+    const [data, allData] = (await Promise.all([
+      this.database.query.ingredients.findMany({
+        // drizzle-orm `and()` requires explicit argument types; dynamic spread
+        // from a conditions array needs a cast here.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        where: conditions.length ? and(...(conditions as any)) : undefined,
+        orderBy,
+        limit: filter.limit,
+        offset: filter.offset,
+      }),
+      this.database.query.ingredients.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        where: conditions.length ? and(...(conditions as any)) : undefined,
+      }),
+    ])) as [Ingredient[], Ingredient[]];
+
+    return { data, stats: computeStats(allData) };
   }
 
   async findIngredientById(id: string): Promise<Ingredient | undefined> {
@@ -166,4 +191,23 @@ export class InventoryRepository implements IInventoryRepository {
       offset: filter.offset,
     }) as Promise<InventoryTransaction[]>;
   }
+}
+
+function computeStats(ingredients: Ingredient[]): InventoryStats {
+  const active = ingredients.filter((i) => i.isActive);
+  const lowStock = active.filter(
+    (i) => i.currentStock > 0 && i.currentStock <= i.minimumStockLevel,
+  );
+  const outOfStock = active.filter((i) => i.currentStock <= 0);
+  const totalValue = active.reduce(
+    (sum, i) => sum + i.currentStock * i.averageUnitCost,
+    0,
+  );
+
+  return {
+    total: active.length,
+    lowStock: lowStock.length,
+    outOfStock: outOfStock.length,
+    totalValue,
+  };
 }

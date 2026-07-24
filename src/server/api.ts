@@ -7,6 +7,7 @@ import { requireAuth } from "./middleware/require-auth";
 import adminInvitationRoutes from "./features/invitation/admin.routes";
 import publicInvitationRoutes from "./features/invitation/public.routes";
 import { appErrorHandler } from "./errors/app-error-handler";
+import inventoryAdminRoutes from "./features/inventory/admin.routes";
 import jobRoutes from "./features/jobs/job.routes";
 
 const app = new Hono<Env>()
@@ -37,6 +38,8 @@ const app = new Hono<Env>()
   // admin routes
   .use("/api/admin/*", requireAuth)
   // user invitation routes (admin routes)
-  .route("/api/admin/invitations", adminInvitationRoutes);
+  .route("/api/admin/invitations", adminInvitationRoutes)
+  // inventory routes (admin routes)
+  .route("/api/admin/inventory", inventoryAdminRoutes);
 
 export default app;
