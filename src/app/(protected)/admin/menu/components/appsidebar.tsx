@@ -3,15 +3,13 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
-
-import { Coffee } from "lucide-react";
-
 import { useSession } from "@/components/providers/session-provider";
 import { navigation } from "../config/navigation";
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -20,8 +18,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
+import { UserNav } from "./user-nav";
 
-export function AppSidebar() {
+type AppSidebarProps = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role?: string | null;
+  } | null;
+};
+
+export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname();
 
   const { hasPermission } = useSession();
@@ -45,8 +54,14 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-3 px-3 py-4">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-[#6f3e1d] text-[#fff8ef]">
-            <Coffee className="size-5" />
+          <div className="flex size-10 items-center justify-center rounded-xl bg-[#6f3e1d]">
+            <Image
+              src="/icon.svg"
+              alt="Coffee"
+              width={24}
+              height={24}
+              className="size-6"
+            />
           </div>
 
           <div>
@@ -86,6 +101,10 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
+      <SidebarFooter>
+        <UserNav user={user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }
